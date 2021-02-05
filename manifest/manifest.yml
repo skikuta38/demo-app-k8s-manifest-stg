@@ -1,0 +1,48 @@
+---
+# Source: template-application/templates/service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app
+  namespace: stg
+  labels:
+    app: demo-app
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 9999
+      targetPort: 9999
+      nodePort: 30002
+  selector:
+    app: demo-app
+  sessionAffinity: None
+
+---
+# Source: template-application/templates/deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+  namespace: stg
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: demo-app
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: demo-app
+        version: v1.2.0-build.11
+    spec:
+      containers:
+        - name: demo-app
+          image: skikuta38/demo-app:v1.2.0-build.11
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9999
+
