@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: demo-app
-  namespace: dev
+  namespace: stg
   labels:
     app: demo-app
 spec:
@@ -24,7 +24,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-app
-  namespace: dev
+  namespace: stg
 spec:
   replicas: 4
   selector:
